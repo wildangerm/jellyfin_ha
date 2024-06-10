@@ -4,6 +4,8 @@ Jellyfin integration for Home Assistant
 
 Forked version to work with 2025.1 version of Home Assistant
 
+All thanks and rights goes to the author of the integration. 
+
 ## Installation:
 
 - Install the Jellyfin integration through HACS or below
