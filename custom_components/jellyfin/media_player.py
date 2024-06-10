@@ -2,7 +2,7 @@
 import logging
 from typing import Mapping, MutableMapping, Optional, Sequence, Iterable, List, Tuple, Union
 
-from homeassistant.components.media_player import PLATFORM_SCHEMA, MediaPlayerEntity
+from homeassistant.components.media_player import PLATFORM_SCHEMA, MediaPlayerEntityFeature
 from homeassistant.components.media_player.const import (
     MEDIA_TYPE_CHANNEL,
     MEDIA_TYPE_MOVIE,
@@ -110,7 +110,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry, async_add_entitie
     _jelly.add_stale_devices_callback(device_removal_callback)
     _jelly.update_device_list()
 
-class JellyfinMediaPlayer(MediaPlayerEntity):
+class JellyfinMediaPlayer(MediaPlayerEntityFeature):
     """Representation of an Jellyfin device."""
 
     def __init__(self, jelly_cm: JellyfinClientManager, device_id):
