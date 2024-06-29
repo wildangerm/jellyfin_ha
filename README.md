@@ -8,8 +8,12 @@ All thanks and rights goes to the author of the integration.
 
 ## Installation:
 
-- Install the Jellyfin integration through HACS or below
-  ![](https://my.home-assistant.io/badges/config_flow_start.svg)
+- Go to HACS
+- Press the three dots in the upper right corner
+- Press Custom repositories
+- In the Repository field, enter 'Mis1ify/jellyfin_ha'
+- In the Category field, select 'Integration'
+- Search for added integration in HACS and install it
 - Configure your Jellyfin server
 - After a restart, you will have media_player and sensor entities.
 
