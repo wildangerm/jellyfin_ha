@@ -194,9 +194,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     for platform in PLATFORMS:
         hass.data[DOMAIN][config.get(CONF_URL)][platform] = {}
         hass.data[DOMAIN][config.get(CONF_URL)][platform]["entities"] = []
-        hass.async_create_task(
-            hass.config_entries.async_forward_entry_setups(config_entry, [platform])
-        )
+        
+        await hass.config_entries.async_forward_entry_setups(config_entry, [platform])
+
 
     async_dispatcher_send(hass, SIGNAL_STATE_UPDATED)
 
