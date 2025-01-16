@@ -3,10 +3,7 @@ from typing import Mapping, MutableMapping, Optional, Sequence, Iterable, List, 
 
 from homeassistant.components.media_player import PLATFORM_SCHEMA, MediaPlayerEntity
 from homeassistant.components.media_player.const import (
-    MEDIA_TYPE_CHANNEL,
-    MEDIA_TYPE_MOVIE,
-    MEDIA_TYPE_MUSIC,
-    MEDIA_TYPE_TVSHOW,
+    MediaType,
     MediaPlayerEntityFeature,
 )
 from homeassistant.const import (
@@ -34,8 +31,8 @@ PLATFORM = "media_player"
 
 _LOGGER = logging.getLogger(__name__)
 
-MEDIA_TYPE_TRAILER = "trailer"
-MEDIA_TYPE_GENERIC_VIDEO = "video"
+MEDIA_TYPE_TRAILER = MediaType.VIDEO
+MEDIA_TYPE_GENERIC_VIDEO = MediaType.VIDEO
 
 DEFAULT_HOST = "localhost"
 DEFAULT_PORT = 8096
@@ -55,8 +52,8 @@ SUPPORT_JELLYFIN = (
 
 async def async_setup_entry(hass: HomeAssistant, config_entry, async_add_entities):
     """Set up media players dynamically."""
-    active_jellyfin_devices: List[JellyfinMediaPlayer] = {}
-    inactive_jellyfin_devices: List[JellyfinMediaPlayer] = {}
+    active_jellyfin_devices: dict = {}
+    inactive_jellyfin_devices: dict = {}
 
     _jelly: JellyfinClientManager = hass.data[DOMAIN][config_entry.data.get(CONF_URL)]["manager"]
     hass.data[DOMAIN][_jelly.host][PLATFORM]["entities"] = []
@@ -211,17 +208,17 @@ class JellyfinMediaPlayer(MediaPlayerEntity):
         """Content type of current playing media."""
         media_type = self.device.media_type
         if media_type == "Episode":
-            return MEDIA_TYPE_TVSHOW
+            return MediaType.TVSHOW
         if media_type == "Movie":
-            return MEDIA_TYPE_MOVIE
+            return MediaType.MOVIE
         if media_type == "Trailer":
             return MEDIA_TYPE_TRAILER
         if media_type in ["Music", "Audio"]:
-            return MEDIA_TYPE_MUSIC
+            return MediaType.MUSIC
         if media_type == "Video":
             return MEDIA_TYPE_GENERIC_VIDEO
         if media_type == "TvChannel":
-            return MEDIA_TYPE_CHANNEL
+            return MediaType.CHANNEL
         return None
 
     @property
@@ -258,7 +255,7 @@ class JellyfinMediaPlayer(MediaPlayerEntity):
     def media_series_title(self):
         """Return the title of the series of current playing media (TV)."""
         return self.device.media_series_title
-        
+
     @property
     def media_episode(self):
         """Return the episode of current playing media (TV only)."""
@@ -297,4 +294,3 @@ class JellyfinMediaPlayer(MediaPlayerEntity):
     async def async_media_seek(self, position: float):
         """Send seek command."""
         await self.device.seek(position)
-
