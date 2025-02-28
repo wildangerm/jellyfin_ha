@@ -270,6 +270,13 @@ class JellyfinMediaPlayer(MediaPlayerEntity):
     def media_artist(self):
         """Return the artist of current playing media (Music track only)."""
         return self.device.media_artist
+    
+    @property
+    def supported_features(self):
+        """Flag media player features that are supported."""
+        if self.supports_remote_control:
+            return SUPPORT_JELLYFIN
+        return 0
 
     async def async_media_play(self):
         """Send play command."""
@@ -294,3 +301,8 @@ class JellyfinMediaPlayer(MediaPlayerEntity):
     async def async_media_seek(self, position: float):
         """Send seek command."""
         await self.device.seek(position)
+
+    async def async_play_media(self, media_type: str, media_id: str, **kwargs) -> None:
+        _LOGGER.debug("Play media requested: %s / %s", media_type, media_id)
+        _, real_media_id = JellyfinSource.parse_mediasource_identifier(media_id)
+        await self.device.play_media(real_media_id)
