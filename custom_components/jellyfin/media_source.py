@@ -224,7 +224,7 @@ async def async_library_items(jelly_cm: JellyfinClientManager,
             can_expand=True,
             children=[],
         )
-    elif media_content_type in [MediaClass.DIRECTORY, MediaType.ARTIST, MediaType.ALBUM, MediaType.PLAYLIST, MediaType.TVSHOW, MediaType.SEASON]:
+    elif media_content_type in [MediaClass.DIRECTORY, MediaType.ARTIST, MediaType.ALBUM, MediaType.PLAYLIST, MediaType.TVSHOW, MediaType.SEASON, MediaType.CHANNEL]:
         query = {
             "ParentId": media_content_id,
             "sortBy": "SortName",
@@ -262,7 +262,7 @@ async def async_library_items(jelly_cm: JellyfinClientManager,
 
     items = await jelly_cm.get_items(query)
     for item in items:
-        if media_content_type in [None, "library", MediaClass.DIRECTORY, MediaType.ARTIST, MediaType.ALBUM, MediaType.PLAYLIST, MediaType.TVSHOW, MediaType.SEASON]:
+        if media_content_type in [None, "library", MediaClass.DIRECTORY, MediaType.ARTIST, MediaType.ALBUM, MediaType.PLAYLIST, MediaType.TVSHOW, MediaType.SEASON, MediaType.CHANNEL]:
             if item["IsFolder"]:
                 library_info.children_media_class = MediaClass.DIRECTORY
                 library_info.children.append(BrowseMediaSource(
